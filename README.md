@@ -7,6 +7,7 @@ It should make life easier for students, companies, teachers. It's main purpose 
 So this project will be created with the framework React. There are 2 repositories to this project, because we wanted to split the front and back end so that the code and structure can be cleaner.
 
 [Frontend](https://github.com/d-woegerbauer/job-info-wall-frontend)
+
 [Backend](https://github.com/d-woegerbauer/job-info-wall-backend)
 
 # Goals
