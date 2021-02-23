@@ -10,5 +10,7 @@ So this project will be created with the framework React. There are 2 repositori
 
 [Backend](https://github.com/d-woegerbauer/job-info-wall-backend)
 
+[Timelog](https://docs.google.com/spreadsheets/d/1bTbBqZqGvOnTD1WTLyDGUHa8uu4knvn3BS996A9__d4/edit#gid=0)
+
 # Goals
 This website should be an improvement for the school and its students so that they have an easier time collecting all the information that would normaly be physically on the wall.
