@@ -10,15 +10,16 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@emotion/react": "^11.0.0",
     "@rebass/preset": "^4.0.5",
     "@types/headroom": "^0.12.0",
     "@types/rebass": "^4.0.7",
-    "@emotion/react": "^11.0.0",
     "next": "10.0.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "rebass": "^4.0.7",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "swr": "^0.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
