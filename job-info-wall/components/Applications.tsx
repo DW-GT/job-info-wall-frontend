@@ -20,6 +20,11 @@ const ApplicationLayout = styled.div`
     padding: 5vw;
 `;
 
+function formatDate(date){
+    date = new Date(date);
+    return date.getDate()+"."+date.getMonth()+"."+date.getFullYear()
+}
+
 export const Applications = ({typeID}
 ) => {
 
@@ -30,21 +35,8 @@ export const Applications = ({typeID}
 
     return(
         <ApplicationLayout>
-            <ApplicationBox
-                applicationHeadline="Frontend Developer"
-                applicationText="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam..."
-                companyName="pcode"
-                startDate="31.03.2021"
-                endDate="25.4.2021"
-                applicationType="Jobausschreibung"
-            >
-            
-            </ApplicationBox>
-
             
             {posts?.map((application,index) =>{
-                let startDate = new Date(application.creation_date);
-                let endDate = new Date(application.expire_date);
                 let applicationType = applicationTypes?.find(applicationType => applicationType.applicationtype_id == application.applicationtype_id);
                 let applicationTypeName;
                 if(applicationType){
@@ -57,10 +49,11 @@ export const Applications = ({typeID}
                 applicationHeadline={application.name}
                 applicationText={application.description}
                 companyName={application.company_name}
-                startDate={startDate.getDate()+"."+startDate.getMonth()+"."+startDate.getFullYear()}
-                endDate={endDate.getDate()+"."+endDate.getMonth()+"."+endDate.getFullYear()}
+                startDate={formatDate(application.creation_date)}
+                endDate={formatDate(application.expire_date)}
                 applicationType={applicationTypeName}
                 key={index}
+                applicationId={application.application_id}
                 >
             
                 </ApplicationBox>

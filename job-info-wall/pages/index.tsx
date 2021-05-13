@@ -16,23 +16,8 @@ const MainPage = ({applications,applicationTypes}) => {
     
     <ThemeProvider theme={theme}>
         <Navigation navigationText="Jobs"></Navigation>
-        <Applications typeID="0" applications={applications} applicationTypes= {applicationTypes}></Applications>
+        <Applications typeID="0" ></Applications>
     </ThemeProvider>
 )};
 
 export default MainPage;
-
-export const getStaticProps: GetStaticProps = async() => {
-
-    const resTypes = await fetch(`http://localhost:4000/api/application/getOfferTypes`);
-    const applicationTypes = await resTypes.json();
-
-    
-
-    return {
-        props:{
-            applicationTypes
-        }
-    }
-
-}

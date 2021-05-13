@@ -1,0 +1,90 @@
+import React from 'react';
+import { Heading, Box, Image } from 'rebass';
+import {theme} from '../theme';
+import styled from 'styled-components';
+import { MainIcon } from '../components/MainIcon';
+import { CurrentPageName } from '../components/CurrentPageName';
+import { ApplicationBox } from '../components/ApplicationBox';
+import { GetStaticProps,GetServerSideProps } from 'next';
+import useSWR from 'swr'
+import { userInfo } from 'os';
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import axios from "axios";
+import { Document } from 'react-pdf/dist/esm/entry.webpack';
+
+const { colors, fonts } = theme;
+
+type Props = {
+    applicationHeadline: string;
+    applicationText: string;
+    companyName: string;
+    startDate: string;
+    applicationType: string;
+    endDate?: string;
+    applicationId: number;
+};
+
+const JobDetailsLayout = styled.div`
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    padding: 7vh 5vw;
+    font-family: ${fonts.primaryFont};
+    color: ${colors.primaryBackgroundColor};
+    font-weight: bold;
+`;
+
+const StyledJobHeadline = styled.h1`
+    background: linear-gradient(90.92deg, #EA4328 0.13%, #FFD400 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3rem;
+    width: fit-content;
+    margin-bottom: 0.4vh;
+`;
+
+const StyledSpaceBar = styled.div`
+    width: 60%;
+    height: 0.5vh;
+    display: block;
+    background-color: ${colors.primaryBackgroundColor};
+`;
+
+const StyledCompanyName = styled.p`
+    text-transform: uppercase;
+    margin-bottom: 4vh;
+`;
+
+const StyledDates = styled.p`
+    line-height: 2rem;
+`;
+
+
+function formatDate(date){
+    date = new Date(date);
+    return date.getDate()+"."+date.getMonth()+"."+date.getFullYear()
+}
+
+export const ApplicationDetails = ({
+    applicationId
+}
+) => {
+
+    const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
+    
+    const content = useSWR("http://localhost:4000/api/application/getOffer/"+applicationId, (url:string)=> axios(url).then(r=> r.data)).data;
+
+
+    return(
+        <JobDetailsLayout>
+            <StyledJobHeadline>{content?.name}</StyledJobHeadline>
+            <StyledSpaceBar></StyledSpaceBar>
+            <StyledCompanyName>{content?.company_name}</StyledCompanyName>
+            <StyledDates>Erstellt am:{formatDate(content?.creation_date)}<br></br>Bis: {formatDate(content?.expire_date)}</StyledDates>
+            <p>{content?.description}</p>
+            <iframe src={content?.pdf_src} width="100%" height="calc(100%/21*29,7)"></iframe>
+        </JobDetailsLayout>
+        );
+};
+
