@@ -27,12 +27,10 @@ export const getStaticProps: GetStaticProps = async() => {
     const resTypes = await fetch(`http://localhost:4000/api/application/getOfferTypes`);
     const applicationTypes = await resTypes.json();
 
-    const res = await fetch(`http://localhost:4000/api/application/getAllOffers`);
-    const applications = await res.json();
+    
 
     return {
         props:{
-            applications,
             applicationTypes
         }
     }

@@ -14,6 +14,7 @@
     "@rebass/preset": "^4.0.5",
     "@types/headroom": "^0.12.0",
     "@types/rebass": "^4.0.7",
+    "axios": "^0.21.1",
     "next": "10.0.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",

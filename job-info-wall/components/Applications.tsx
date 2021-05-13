@@ -7,6 +7,10 @@ import { CurrentPageName } from '../components/CurrentPageName';
 import { ApplicationBox } from '../components/ApplicationBox';
 import { GetStaticProps,GetServerSideProps } from 'next';
 import useSWR from 'swr'
+import { userInfo } from 'os';
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import axios from "axios";
 
 const {colors, fonts} = theme;
 
@@ -16,12 +20,14 @@ const ApplicationLayout = styled.div`
     padding: 5vw;
 `;
 
-export const Applications = ({typeID,applications,applicationTypes}
+export const Applications = ({typeID}
 ) => {
-    if(typeID != 0){
-    const { user, isLoading, isError } = getApplications(typeID);
-    }
+
+    const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
     
+    const posts = useSWR("http://localhost:4000/api/application/getAllOffers/", (url:string)=> axios(url).then(r=> r.data)).data;
+
+
     return(
         <ApplicationLayout>
             <ApplicationBox
@@ -36,36 +42,33 @@ export const Applications = ({typeID,applications,applicationTypes}
             </ApplicationBox>
 
             
-            {applications.map((application) =>{
+            {posts?.map((application,index) =>{
+                let startDate = new Date(application.creation_date);
+                let endDate = new Date(application.expire_date);
+                let applicationType = applicationTypes?.find(applicationType => applicationType.applicationtype_id == application.applicationtype_id);
+                let applicationTypeName;
+                if(applicationType){
+                    applicationTypeName = applicationType.name;
+                }else{
+                    applicationTypeName = "";
+                }
+                return(
                 <ApplicationBox
                 applicationHeadline={application.name}
                 applicationText={application.description}
                 companyName={application.company_name}
-                startDate={application.creation_date}
-                endDate={application.expire_date}
-                applicationType={applicationTypes[application.applicationtype_id]}
-            >
+                startDate={startDate.getDate()+"."+startDate.getMonth()+"."+startDate.getFullYear()}
+                endDate={endDate.getDate()+"."+endDate.getMonth()+"."+endDate.getFullYear()}
+                applicationType={applicationTypeName}
+                key={index}
+                >
             
-            </ApplicationBox>
-            })}
+                </ApplicationBox>
+            )})}
                 
            
             
         </ApplicationLayout>
         );
 };
-
-const fetcher = (...args) => fetch(...args).then(res => res.json());
-
-export const getApplications = (typeID) =>{
-    const {data,error} = useSWR('http://localhost:4000/api/application/getSpecificOffers/'+typeID,fetcher);
-
-    return {
-        user: data,
-        isLoading: !error && !data,
-        isError: error
-      }
-}
-
-
 
