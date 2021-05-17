@@ -14,9 +14,10 @@ type Props = {
     startDate: string;
     applicationType: string;
     endDate?: string;
+    applicationId: number;
 };
 
-const StyledApplicationBox = styled.div`
+const StyledApplicationBox = styled.a`
     width: 100%;
     border-radius: 20px;
     background: linear-gradient(54.12deg, rgba(234, 127, 109, 0.93) 40.19%, rgba(255, 228, 96, 0.92) 100%);
@@ -36,7 +37,7 @@ const StyledContentSpacing = styled.div`
     width: 20%;
     height: 0.7vh;
     display: block;
-    background-color: ${colors.secondaryColor}
+    background-color: ${colors.secondaryColor};
 `;
 
 const StyledApplicationContent = styled.p`
@@ -53,10 +54,11 @@ export const ApplicationBox: React.FC<Props> = ({
     companyName,
     startDate,
     applicationType,
-    endDate
+    endDate,
+    applicationId
 }) => {
     return(
-    <StyledApplicationBox>
+    <StyledApplicationBox href={"/details/"+applicationId} >
         <StyledApplicationHeadline>{applicationHeadline}</StyledApplicationHeadline>
         <StyledContentSpacing></StyledContentSpacing>
         <StyledApplicationContent>{companyName}</StyledApplicationContent>
