@@ -11,6 +11,7 @@ import { Navigation } from '../components/Navigation';
 import { Applications } from '../components/Applications';
 import { Footer } from '../components/Footer';
 
+
 const MainPage = () => (
     <ThemeProvider theme={theme}>
         <Navigation navigationText="Jobs"></Navigation>

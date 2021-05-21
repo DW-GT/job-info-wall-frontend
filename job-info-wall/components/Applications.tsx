@@ -6,11 +6,12 @@ import { MainIcon } from '../components/MainIcon';
 import { CurrentPageName } from '../components/CurrentPageName';
 import { ApplicationBox } from '../components/ApplicationBox';
 import { GetStaticProps,GetServerSideProps } from 'next';
-import useSWR from 'swr'
+import useSWR from 'swr';
 import { userInfo } from 'os';
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import axios from "axios";
+import store from '../redux/store';
 
 const {colors, fonts} = theme;
 
@@ -32,6 +33,9 @@ export const Applications = ({typeID}
     
     const posts = useSWR("http://localhost:4000/api/application/getAllOffers/", (url:string)=> axios(url).then(r=> r.data)).data;
 
+    const unsubscribe = store.subscribe(() =>
+        console.log('State after dispatch: ', store.getState())
+    );
 
     return(
         <ApplicationLayout>

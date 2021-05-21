@@ -4,6 +4,12 @@ import { theme } from '../theme';
 import styled from 'styled-components';
 import { MainIcon } from '../components/MainIcon';
 import { CurrentPageName } from '../components/CurrentPageName';
+import useSWR from "swr";
+import axios from "axios";
+import {connect} from 'react-redux';
+import {CHANGE_TYPE_ID} from '../redux/actions/typeIdAction';
+import store from '../redux/store';
+
 
 const { colors, fonts } = theme;
 
@@ -41,12 +47,28 @@ const StyledHeadlineText = styled.h2`
 `;
 
 export const Navigation: React.FC<Props> = ({ navigationText }) => {
+    const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
+
+    function changeContent(){
+        store.dispatch({type:'changeId',typeId: document.getElementById("typeChanger").nodeValue});
+    } 
+
+
     return (
         <StyledNavigation className="nav">
             <StyledHtlLogo src="htl-leonding-logo-small.svg" />
             <CurrentPageName>All</CurrentPageName>
             <StyledHeadlineText>{navigationText}</StyledHeadlineText>
             <StyledMainIcon src="mainIcon.svg" />
+            <select onChange={changeContent} id="typeChanger">
+                <option value = "-1" >All</option>
+            {applicationTypes?.map((type,index)=>{
+                return(
+                    <option value={type.applicationtype_id}>{type}</option>
+                )
+            })}
+            
+            </select>
         </StyledNavigation>
     );
 };

@@ -10,22 +10,26 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.0",
     "@rebass/preset": "^4.0.5",
     "@types/headroom": "^0.12.0",
     "@types/rebass": "^4.0.7",
     "axios": "^0.21.1",
-    "next": "10.0.4",
+    "next": "^10.2.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-redux": "^7.2.4",
     "rebass": "^4.0.7",
-    "styled-components": "^5.2.1"
+    "redux": "^4.1.0",
+    "styled-components": "^5.2.1",
+    "swr": "^0.5.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@storybook/addon-actions": "^6.1.11",
-    "@storybook/addon-essentials": "^6.1.11",
+    "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.1.11",
-    "@storybook/react": "^6.1.11",
+    "@storybook/react": "^6.2.9",
     "@types/node": "^14.14.20",
     "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
