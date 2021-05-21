@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heading, Box, Image } from 'rebass';
 import { theme } from '../theme';
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ export const Navigation: React.FC<Props> = ({ navigationText }) => {
     const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
 
     function changeContent(){
-        store.dispatch({type:'changeId',typeId: document.getElementById("typeChanger").nodeValue});
+        store.dispatch({type:'changeId',typeId: document.getElementById("typeChanger").value});
     } 
 
 
@@ -62,9 +62,9 @@ export const Navigation: React.FC<Props> = ({ navigationText }) => {
             <StyledMainIcon src="mainIcon.svg" />
             <select onChange={changeContent} id="typeChanger">
                 <option value = "-1" >All</option>
-            {applicationTypes?.map((type,index)=>{
+                {applicationTypes?.map((type,index)=>{
                 return(
-                    <option value={type.applicationtype_id}>{type}</option>
+                    <option value={type.applicationtype_id}>{ type.name}</option>
                 )
             })}
             

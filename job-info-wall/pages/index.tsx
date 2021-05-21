@@ -15,7 +15,7 @@ import { Footer } from '../components/Footer';
 const MainPage = () => (
     <ThemeProvider theme={theme}>
         <Navigation navigationText="Jobs"></Navigation>
-        <Applications typeID="0" ></Applications>
+        <Applications ></Applications>
     </ThemeProvider>
 );
 
