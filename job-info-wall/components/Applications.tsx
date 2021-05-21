@@ -31,12 +31,11 @@ export const Applications = ({}
 
     const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
     
-    const posts = useSWR(store.getState().state.typeId != -1 ?"http://localhost:4000/api/application/getSpecificOffers/"+store.getState().state.typeId:"http://localhost:4000/api/application/getAllOffers/", (url:string)=> axios(url).then(r=> r.data)).data;
+    const posts = useSWR(store.getState().state != undefined && store.getState().state.typeId != -1 ?"http://localhost:4000/api/application/getSpecificOffers/"+store.getState().state.typeId:"http://localhost:4000/api/application/getAllOffers/", (url:string)=> axios(url).then(r=> r.data)).data;
 
     const [val, setVal] = useState();
 
     const unsubscribe = store.subscribe(() =>{
-        console.log('State after dispatch: ', store.getState().state.typeId);
         setVal(store.getState().state.typeId);
     }
     );
