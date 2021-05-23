@@ -87,6 +87,13 @@ export const Footer = ({}) => {
                     Datenschutz
                 </StyledFooterLink>
                 {loggedIn ? (
+                    <StyledFooterLink href="/adminOverview">
+                        Admin Dashboard
+                    </StyledFooterLink>
+                ) : (
+                    ''
+                )}
+                {loggedIn ? (
                     <StyledLogoutButton
                         onClick={() => {
                             cookie.remove('token');
