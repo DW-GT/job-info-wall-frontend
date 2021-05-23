@@ -30,6 +30,10 @@ const StyledApplicationBox = styled.a`
     display: inline-block;
     padding: 2vh 6vw;
 
+    @media ${device.tablet}{
+        padding: 2vh 4vw;
+    }
+
     @media ${device.desktop}{
         padding: 2vh 2vw;
     }

@@ -23,6 +23,11 @@ const ApplicationLayout = styled.div`
     width: 100vw;
     margin-top: 10vh;
     padding: 5vw;
+
+    @media ${device.tablet}{
+        grid-template-columns: 1fr 1fr;
+    }
+
     @media ${device.desktop}{
         grid-template-columns: repeat(3, 1fr);
     }

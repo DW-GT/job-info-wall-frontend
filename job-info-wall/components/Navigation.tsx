@@ -49,6 +49,7 @@ const StyledSelectBox = styled.select`
     background: url('/mainIcon.svg') no-repeat right rgba(0,0,0,0);
     -webkit-appearance: none;
     background-position-x: calc(50vw-30px);
+    cursor: pointer;
 `;
 
 export const Navigation: React.FC<Props> = ({ navigationText, showNavigationSelectBox }) => {

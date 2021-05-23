@@ -3,6 +3,7 @@ import { theme } from '../theme';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import axios from 'axios';
+import {device} from '../devices';
 
 const { colors, fonts } = theme;
 
@@ -14,6 +15,9 @@ const JobDetailsLayout = styled.div`
     font-family: ${fonts.primaryFont};
     color: ${colors.primaryBackgroundColor};
     font-weight: bold;
+    @media ${device.desktop}{
+        padding: 15vh 15vw;
+    }
 `;
 
 const StyledJobHeadline = styled.h1`
