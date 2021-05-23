@@ -10,14 +10,14 @@ import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { Applications } from '../components/Applications';
 import { Footer } from '../components/Footer';
+import { Login } from '../components/Login';
 
-
-const MainPage = () => (
+const LoginPage = () => (
     <ThemeProvider theme={theme}>
-        <Navigation showNavigationSelectBox={true}></Navigation>
-        <Applications ></Applications>
+        <Navigation></Navigation>
+        <Login></Login>
         <Footer></Footer>
     </ThemeProvider>
 );
 
-export default MainPage;
+export default LoginPage;

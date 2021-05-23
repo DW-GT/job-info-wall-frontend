@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from 'rebass';
 import { theme } from '../theme';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { device } from '../devices';
+import cookie from 'js-cookie';
+import Router from 'next/router';
 
 const { colors, fonts } = theme;
 
@@ -17,7 +19,7 @@ const FooterBoxLayout = styled.div`
     font-family: ${fonts.primaryFont};
     margin-top: 5vh;
 
-    @media ${device.desktop}{
+    @media ${device.desktop} {
         flex-direction: row;
         justify-content: space-around;
     }
@@ -28,8 +30,8 @@ const FooterLinkBoxLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    @media ${device.desktop}{
+
+    @media ${device.desktop} {
         flex-direction: row;
         width: 50%;
         justify-content: space-evenly;
@@ -48,16 +50,85 @@ const FooterLogoLayout = styled.div`
     justify-content: center;
 `;
 
+const StyledLogoutButton = styled.button`
+    border: none;
+    background-color: transparent;
+    color: ${colors.secondaryColor};
+    font-size: 1rem;
+    margin: 1vh 0;
+`;
+
 export const Footer = ({}) => {
+    const token = cookie.get('token');
+    const adminId = cookie.get('adminId');
+    const [loggedIn, setLoggedIn] = useState(false);
+    if (token && !loggedIn) {
+        setLoggedIn(true);
+    }
     return (
         <FooterBoxLayout>
             <FooterLinkBoxLayout>
-                <StyledFooterLink target="_blank" href="https://www.htl-leonding.at/kontakt/">Kontakt</StyledFooterLink>
-                <StyledFooterLink target="_blank" href="https://www.htl-leonding.at/impressum/">Impressum</StyledFooterLink>
-                <StyledFooterLink target="_blank" href="https://www.htl-leonding.at/datenschutz/">Datenschutz</StyledFooterLink>
+                <StyledFooterLink
+                    target="_blank"
+                    href="https://www.htl-leonding.at/kontakt/"
+                >
+                    Kontakt
+                </StyledFooterLink>
+                <StyledFooterLink
+                    target="_blank"
+                    href="https://www.htl-leonding.at/impressum/"
+                >
+                    Impressum
+                </StyledFooterLink>
+                <StyledFooterLink
+                    target="_blank"
+                    href="https://www.htl-leonding.at/datenschutz/"
+                >
+                    Datenschutz
+                </StyledFooterLink>
+                {loggedIn ? (
+                    <StyledLogoutButton
+                        onClick={() => {
+                            cookie.remove('token');
+                            cookie.remove('adminId');
+                            setLoggedIn(false);
+                            //call api
+                            fetch(
+                                'http://localhost:4000/api/application/logOut',
+                                {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        admin_id: adminId,
+                                        token,
+                                    }),
+                                },
+                            )
+                                .then((r) => {
+                                    return r.status;
+                                })
+                                .then((status) => {
+                                    if (status == 200) {
+                                        Router.push('/');
+                                    }
+                                });
+                        }}
+                    >
+                        Logout
+                    </StyledLogoutButton>
+                ) : (
+                    ''
+                )}
             </FooterLinkBoxLayout>
             <FooterLogoLayout>
-                <Image alt="Htl Logo" width={500} height={100}  src="/htl-leonding-logo.svg" ></Image>
+                <Image
+                    alt="Htl Logo"
+                    width={500}
+                    height={100}
+                    src="/htl-leonding-logo.svg"
+                ></Image>
             </FooterLogoLayout>
         </FooterBoxLayout>
     );

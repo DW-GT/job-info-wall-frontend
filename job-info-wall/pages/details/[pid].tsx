@@ -20,7 +20,7 @@ const DetailPage = (application_id) => {
 
     return(
     <ThemeProvider theme={theme}>
-        <Navigation navigationText="Jobs"></Navigation>
+        <Navigation></Navigation>
         <ApplicationDetails applicationId={pid} ></ApplicationDetails>
         <Footer></Footer>
     </ThemeProvider>

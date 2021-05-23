@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { Heading, Box } from 'rebass';
+import React from 'react';
 import { theme } from '../theme';
 import styled from 'styled-components';
-import { MainIcon } from '../components/MainIcon';
 import useSWR from "swr";
 import axios from "axios";
-import {connect} from 'react-redux';
-import {CHANGE_TYPE_ID} from '../redux/actions/typeIdAction';
 import store from '../redux/store';
 import Image from 'next/image';
 
@@ -14,7 +10,6 @@ import Image from 'next/image';
 const { colors, fonts } = theme;
 
 type Props = {
-    navigationText: string;
     showNavigationSelectBox?: boolean;
 };
 
@@ -52,7 +47,7 @@ const StyledSelectBox = styled.select`
     cursor: pointer;
 `;
 
-export const Navigation: React.FC<Props> = ({ navigationText, showNavigationSelectBox }) => {
+export const Navigation: React.FC<Props> = ({ showNavigationSelectBox }) => {
     const applicationTypes = useSWR("http://localhost:4000/api/application/getOfferTypes/", (url:string)=> axios(url).then(r=> r.data)).data;
 
     function changeContent(){
