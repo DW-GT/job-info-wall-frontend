@@ -11,6 +11,7 @@ import { Navigation } from '../../components/Navigation';
 import { ApplicationDetails } from '../../components/ApplicationDetails';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import { Footer } from '../../components/Footer';
 
 const DetailPage = (application_id) => {
 
@@ -21,6 +22,7 @@ const DetailPage = (application_id) => {
     <ThemeProvider theme={theme}>
         <Navigation navigationText="Jobs"></Navigation>
         <ApplicationDetails applicationId={pid} ></ApplicationDetails>
+        <Footer></Footer>
     </ThemeProvider>
 )};
 

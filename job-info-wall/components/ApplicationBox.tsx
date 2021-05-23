@@ -4,6 +4,7 @@ import { theme } from '../theme';
 import styled from 'styled-components';
 import { MainIcon } from '../components/MainIcon';
 import { CurrentPageName } from '../components/CurrentPageName';
+import { device } from '../devices';
 
 const { colors, fonts } = theme;
 
@@ -20,10 +21,18 @@ type Props = {
 const StyledApplicationBox = styled.a`
     width: 100%;
     border-radius: 20px;
-    background: linear-gradient(54.12deg, rgba(234, 127, 109, 0.93) 40.19%, rgba(255, 228, 96, 0.92) 100%);
+    background: linear-gradient(
+        54.12deg,
+        rgba(234, 127, 109, 0.93) 40.19%,
+        rgba(255, 228, 96, 0.92) 100%
+    );
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     display: inline-block;
-    padding: 2vh 10vw;
+    padding: 2vh 6vw;
+
+    @media ${device.desktop}{
+        padding: 2vh 2vw;
+    }
 `;
 
 const StyledApplicationHeadline = styled.h1`
@@ -55,17 +64,25 @@ export const ApplicationBox: React.FC<Props> = ({
     startDate,
     applicationType,
     endDate,
-    applicationId
+    applicationId,
 }) => {
-    return(
-    <StyledApplicationBox href={"/details/"+applicationId} >
-        <StyledApplicationHeadline>{applicationHeadline}</StyledApplicationHeadline>
-        <StyledContentSpacing></StyledContentSpacing>
-        <StyledApplicationContent>{companyName}</StyledApplicationContent>
-        <StyledApplicationContent>{startDate} - {endDate}</StyledApplicationContent>
-        <StyledApplicationContent>{applicationType}</StyledApplicationContent>
-        <br/>
-        <StyledApplicationContent>{applicationText}</StyledApplicationContent>
-    </StyledApplicationBox>
+    return (
+        <StyledApplicationBox href={'/details/' + applicationId}>
+            <StyledApplicationHeadline>
+                {applicationHeadline}
+            </StyledApplicationHeadline>
+            <StyledContentSpacing></StyledContentSpacing>
+            <StyledApplicationContent>{companyName}</StyledApplicationContent>
+            <StyledApplicationContent>
+                {startDate} - {endDate}
+            </StyledApplicationContent>
+            <StyledApplicationContent>
+                {applicationType}
+            </StyledApplicationContent>
+            <br />
+            <StyledApplicationContent>
+                {applicationText}
+            </StyledApplicationContent>
+        </StyledApplicationBox>
     );
 };

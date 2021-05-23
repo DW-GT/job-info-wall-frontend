@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Image } from 'rebass';
+import { Box } from 'rebass';
 import { theme } from '../theme';
 import styled from 'styled-components';
+import Image from 'next/image';
 
 const { colors, fonts } = theme;
 
@@ -27,7 +28,7 @@ const StyledFooterLink = styled.a`
     margin: 1vh 0;
 `;
 
-const FooterLogoLayout = styled.img`
+const FooterLogoLayout = styled.div`
     padding: 0 5vw;
 `;
 
@@ -39,7 +40,9 @@ export const Footer = ({}) => {
                 <StyledFooterLink target="_blank" href="https://www.htl-leonding.at/impressum/">Impressum</StyledFooterLink>
                 <StyledFooterLink target="_blank" href="https://www.htl-leonding.at/datenschutz/">Datenschutz</StyledFooterLink>
             </FooterLinkBoxLayout>
-            <FooterLogoLayout src="htl-leonding-logo.svg" />
+            <FooterLogoLayout>
+                <Image alt="Htl Logo" width={500} height={100}  src="/htl-leonding-logo.svg" ></Image>
+            </FooterLogoLayout>
         </FooterBoxLayout>
     );
 };
