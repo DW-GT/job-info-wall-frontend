@@ -29,13 +29,17 @@ const StyledApplicationBox = styled.a`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     display: inline-block;
     padding: 2vh 6vw;
+    transition: all 200ms;
 
-    @media ${device.tablet}{
+    @media ${device.tablet} {
         padding: 2vh 4vw;
     }
 
-    @media ${device.desktop}{
+    @media ${device.desktop} {
         padding: 2vh 2vw;
+    }
+    :hover {
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
     }
 `;
 

@@ -95,7 +95,12 @@ function getDateFormatted(dateString) {
     return year + '-' + month + '-' + dt;
 }
 
-export const ApplicationEdit = ({ applicationId }) => {
+function addMonths(date, months) {
+    date.setMonth(date.getMonth() + months);
+    return date;
+}
+
+export const ApplicationAdd = () => {
     const [loginError, setLoginError] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -104,7 +109,7 @@ export const ApplicationEdit = ({ applicationId }) => {
     const [pdfSrc, setPdfSrc] = useState('');
     const [endDate, setEndDate] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState('');
+    const [type, setType] = useState(1);
     const applicationTypes = useSWR(
         `http://localhost:4000/api/application/getOfferTypes/`,
         (url: string) => axios(url).then((r) => r.data),
@@ -112,30 +117,11 @@ export const ApplicationEdit = ({ applicationId }) => {
 
     const token = cookie.get('token');
     const admin_id = cookie.get('adminId');
-    const content = useSWR(
-        `http://localhost:4000/api/application/getOffer/` + applicationId,
-        (url: string) => axios(url).then((r) => r.data),
-    ).data;
-
-    let applicationType = applicationTypes?.find(
-        (applicationType) =>
-            applicationType.applicationtype_id == content?.applicationtype_id,
-    );
-    if (content && applicationTypes && name == '') {
-        setName(content?.name);
-        setCompany(content?.company_name);
-        setPdfSrc(content?.pdf_src);
-        setEndDate(getDateFormatted(content?.expire_date));
-        setDescription(content?.description);
-        setEmail(content?.email);
-        setTelefon(content?.telefon);
-        setType(applicationType?.applicationtype_id);
-    }
     function handleSubmit(e) {
         e.preventDefault();
         //call api
-        fetch('http://localhost:4000/api/application/editOffer', {
-            method: 'PUT',
+        fetch('http://localhost:4000/api/application/addOffer', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -143,17 +129,16 @@ export const ApplicationEdit = ({ applicationId }) => {
                 admin_id,
                 token,
                 application: {
-                    application_id: content.application_id,
                     name,
                     description,
                     company_name: company,
                     email,
                     telefon,
                     pdf_src: pdfSrc,
-                    creation_date: content.creation_date,
-                    expire_date: content.expire_date,
+                    creation_date: new Date().toISOString(),
+                    expire_date: addMonths(new Date(), 6),
                     lastupdate_date: new Date().toISOString(),
-                    applicationType: type,
+                    applicationtype: type,
                 },
             }),
         })
@@ -164,7 +149,9 @@ export const ApplicationEdit = ({ applicationId }) => {
                 if (status == 200) {
                     Router.push('/adminOverview');
                 } else {
-                    setLoginError('Der Eintrag konnte nicht gespeichert werden');
+                    setLoginError(
+                        'Der Eintrag konnte nicht hinzugefügt werden',
+                    );
                 }
             });
     }
@@ -236,7 +223,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                     <br />
                     <StyledSelectField
                         value={type}
-                        onChange={(e) => setType(e.target.value)}
+                        onChange={(e) => setType(Number(e.target.value))}
                     >
                         {applicationTypes?.map((currentType) => {
                             return (
@@ -249,7 +236,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                     <br />
                     <StyledLoginButton
                         type="submit"
-                        value="Speichern"
+                        value="Hinzufügen"
                     ></StyledLoginButton>
                     {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
                 </form>
