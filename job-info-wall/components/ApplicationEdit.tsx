@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import axios from 'axios';
 import { device } from '../devices';
+import Router from 'next/router';
+import cookie from 'js-cookie';
 
 const { colors, fonts } = theme;
 
@@ -90,12 +92,14 @@ function getDateFormatted(dateString) {
     if (Number.parseInt(month) < 10) {
         month = '0' + month;
     }
-    return year+'-' + month + '-'+dt;
+    return year + '-' + month + '-' + dt;
 }
 
 export const ApplicationEdit = ({ applicationId }) => {
     const [loginError, setLoginError] = useState('');
     const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefon, setTelefon] = useState('');
     const [company, setCompany] = useState('');
     const [pdfSrc, setPdfSrc] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -106,6 +110,8 @@ export const ApplicationEdit = ({ applicationId }) => {
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
+    const token = cookie.get('token');
+    const admin_id = cookie.get('adminId');
     const content = useSWR(
         `http://localhost:4000/api/application/getOffer/` + applicationId,
         (url: string) => axios(url).then((r) => r.data),
@@ -119,18 +125,59 @@ export const ApplicationEdit = ({ applicationId }) => {
         setName(content?.name);
         setCompany(content?.company_name);
         setPdfSrc(content?.pdf_src);
-        setEndDate(
-            getDateFormatted(content?.expire_date)
-        );
+        setEndDate(getDateFormatted(content?.expire_date));
         setDescription(content?.description);
+        setEmail(content?.email);
+        setTelefon(content?.telefon);
         setType(applicationType.applicationtype_id);
     }
+    function handleSubmit(e) {
+        e.preventDefault();
+        //call api
+        fetch('http://localhost:4000/api/application/editOffer', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                admin_id,
+                token,
+                application: {
+                    application_id: content.application_id,
+                    name,
+                    description,
+                    compnay_name: company,
+                    email,
+                    telefon,
+                    pdf_src: pdfSrc,
+                    creation_date: content.creation_date,
+                    expire_date: content.expire_date,
+                    lastupdate_date: new Date().toISOString(),
+                    applicationType: type,
+                },
+            }),
+        })
+            .then((r) => {
+                if (r.status == 200) {
+                    return r.json();
+                }
+            })
+            .then((data) => {
+                if (data && data.login_token) {
+                    //set cookie
+                    Router.push('/adminOverview');
+                } else {
+                    setLoginError('Die eingegebenen Daten stimmen nicht');
+                }
+            });
+    }
+
     return (
         <JobDetailsLayout>
             <div>
                 <StyledJobHeadline>Bearbeiten</StyledJobHeadline>
                 <StyledSpaceBar></StyledSpaceBar>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <br />
                     <label>Name:</label>
                     <br />
@@ -146,6 +193,23 @@ export const ApplicationEdit = ({ applicationId }) => {
                         placeholder="Firma"
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
+                    ></StyledInputField>
+                    <br />
+                    <label>E-Mail:</label>
+                    <br />
+                    <StyledInputField
+                        placeholder="Email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    ></StyledInputField>
+                    <br />
+                    <label>Telefon:</label>
+                    <br />
+                    <StyledInputField
+                        placeholder="Telefon"
+                        value={telefon}
+                        onChange={(e) => setTelefon(e.target.value)}
                     ></StyledInputField>
                     <br />
                     <label>PDF Link:</label>
@@ -166,11 +230,17 @@ export const ApplicationEdit = ({ applicationId }) => {
                     <br />
                     <label>Beschreibung:</label>
                     <br />
-                    <StyledTextField value={description}></StyledTextField>
+                    <StyledTextField
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    ></StyledTextField>
                     <br />
                     <label>Typ:</label>
                     <br />
-                    <StyledSelectField value={type}>
+                    <StyledSelectField
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
                         {applicationTypes?.map((currentType) => {
                             return (
                                 <option value={currentType.applicationtype_id}>
