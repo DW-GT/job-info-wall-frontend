@@ -74,7 +74,7 @@ export const ApplicationDetails = ({ applicationId }) => {
             <iframe
                 src={content?.pdf_src}
                 width="100%"
-                height="calc(100%/21*29,7)"
+                height="1000px"
             ></iframe>
         </JobDetailsLayout>
     );

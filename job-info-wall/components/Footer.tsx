@@ -23,6 +23,7 @@ const FooterBoxLayout = styled.div`
         flex-direction: row;
         justify-content: space-around;
     }
+    overflow: hidden;
 `;
 
 const FooterLinkBoxLayout = styled.div`
@@ -56,6 +57,7 @@ const StyledLogoutButton = styled.button`
     color: ${colors.secondaryColor};
     font-size: 1rem;
     margin: 1vh 0;
+    cursor: pointer;
 `;
 
 export const Footer = ({}) => {
@@ -132,7 +134,7 @@ export const Footer = ({}) => {
             <FooterLogoLayout>
                 <Image
                     alt="Htl Logo"
-                    width={500}
+                    width={400}
                     height={100}
                     src="/htl-leonding-logo.svg"
                 ></Image>
