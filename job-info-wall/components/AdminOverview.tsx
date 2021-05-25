@@ -98,20 +98,19 @@ export const AdminOverview = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                admin_id,
-                token,
-                applicationId: id,
+                admin_id:admin_id,
+                token:token,
+                applicationid: id,
             }),
         })
             .then((r) => {
-                console.log(r);
                 return r.status;
             })
             .then((status) => {
                 console.log(status);
-                if (status == 200) {
+                if (status == 200) {                    
                     //set cookie
-                    Router.push('/adminOverview');
+                    Router.reload();
                 }
             });
     }
