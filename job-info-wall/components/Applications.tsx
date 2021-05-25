@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import store from '../redux/store';
 import { device } from '../devices';
+import { SearchBar } from 'react-native-elements';
 
 const { colors, fonts } = theme;
 
@@ -23,11 +24,11 @@ const ApplicationLayout = styled.div`
     width: 100%;
     padding: 5vw;
 
-    @media ${device.tablet}{
+    @media ${device.tablet} {
         grid-template-columns: 1fr 1fr;
     }
 
-    @media ${device.desktop}{
+    @media ${device.desktop} {
         grid-template-columns: repeat(3, 1fr);
     }
 `;
@@ -38,12 +39,13 @@ function formatDate(date) {
 }
 
 export const Applications = ({}) => {
+    const [inputValue, setInputValue] = useState('');
     const applicationTypes = useSWR(
         'http://localhost:4000/api/application/getOfferTypes/',
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
-    const posts = useSWR(
+    let posts = useSWR(
         store.getState().state != undefined &&
             store.getState().state.typeId != -1
             ? 'http://localhost:4000/api/application/getSpecificOffers/' +
@@ -58,8 +60,25 @@ export const Applications = ({}) => {
         setVal(store.getState().state.typeId);
     });
 
+    function updateApplications(text: string) {
+        console.log(text);
+        setVal(
+            posts.find((application) => {
+                return application.name.includes(text);
+            }),
+        );
+    }
+
     return (
         <ApplicationLayout>
+            <SearchBar
+                round
+                searchIcon={{ size: 24 }}
+                onChangeText={(text) => updateApplications(text)}
+                onClear={(text) => updateApplications('')}
+                placeholder="Type Here..."
+                value={this.state.search}
+            />
             {posts?.map((application, index) => {
                 let applicationType = applicationTypes?.find(
                     (applicationType) =>
