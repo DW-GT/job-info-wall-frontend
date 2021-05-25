@@ -10,7 +10,7 @@ import Router from 'next/router';
 const { colors, fonts } = theme;
 
 const FooterBoxLayout = styled.div`
-    width: 100vw;
+    width: 100%;
     padding: 5vh 5vw;
     display: flex;
     flex-direction: column;

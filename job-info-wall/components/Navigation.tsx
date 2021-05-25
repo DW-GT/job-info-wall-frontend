@@ -25,7 +25,7 @@ const StyledNavigation = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     background-color: ${colors.secondaryBackgroundColor};
     padding: 1.8vh 0;
     justify-content: center;

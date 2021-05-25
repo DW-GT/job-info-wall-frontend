@@ -20,8 +20,7 @@ const ApplicationLayout = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 5vh;
-    width: 100vw;
-    margin-top: 10vh;
+    width: 100%;
     padding: 5vw;
 
     @media ${device.tablet}{

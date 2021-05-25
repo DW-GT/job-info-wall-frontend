@@ -12,6 +12,8 @@ import { ApplicationDetails } from '../../components/ApplicationDetails';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { Footer } from '../../components/Footer';
+import {Stretcher } from '../../components/Stretcher';
+
 
 const DetailPage = (application_id) => {
 
@@ -21,7 +23,9 @@ const DetailPage = (application_id) => {
     return(
     <ThemeProvider theme={theme}>
         <Navigation></Navigation>
+        <Stretcher>
         <ApplicationDetails applicationId={pid} ></ApplicationDetails>
+        </Stretcher>
         <Footer></Footer>
     </ThemeProvider>
 )};

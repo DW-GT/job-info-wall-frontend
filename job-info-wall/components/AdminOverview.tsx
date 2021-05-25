@@ -9,7 +9,6 @@ import axios from 'axios';
 const { colors, fonts } = theme;
 
 const AdminOverviewLayout = styled.table`
-    margin-top: 10vh;
     width: 100vw;
     padding: 7vh 10vw;
     border-spacing: 20px;

@@ -12,6 +12,8 @@ import { ApplicationEdit } from '../../components/ApplicationEdit';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { Footer } from '../../components/Footer';
+import {Stretcher } from '../../components/Stretcher';
+
 
 const EditPage = (application_id) => {
 
@@ -21,7 +23,9 @@ const EditPage = (application_id) => {
     return(
     <ThemeProvider theme={theme}>
         <Navigation></Navigation>
+        <Stretcher>
         <ApplicationEdit applicationId={pid} ></ApplicationEdit>
+        </Stretcher>
         <Footer></Footer>
     </ThemeProvider>
 )};

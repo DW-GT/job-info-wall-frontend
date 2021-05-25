@@ -10,12 +10,16 @@ import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { Applications } from '../components/Applications';
 import { Footer } from '../components/Footer';
+import {Stretcher } from '../components/Stretcher';
+
 
 
 const MainPage = () => (
     <ThemeProvider theme={theme}>
         <Navigation showNavigationSelectBox={true}></Navigation>
+        <Stretcher>
         <Applications ></Applications>
+        </Stretcher>
         <Footer></Footer>
     </ThemeProvider>
 );
