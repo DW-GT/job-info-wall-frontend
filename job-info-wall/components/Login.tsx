@@ -13,7 +13,6 @@ const LoginLayout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10vh;
 `;
 
 const LoginFormBox = styled.div`
