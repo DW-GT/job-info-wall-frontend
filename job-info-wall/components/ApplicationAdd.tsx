@@ -159,7 +159,7 @@ export const ApplicationAdd = () => {
     return (
         <JobDetailsLayout>
             <div>
-                <StyledJobHeadline>Bearbeiten</StyledJobHeadline>
+                <StyledJobHeadline>Hinzufügen</StyledJobHeadline>
                 <StyledSpaceBar></StyledSpaceBar>
                 <form onSubmit={handleSubmit}>
                     <br />

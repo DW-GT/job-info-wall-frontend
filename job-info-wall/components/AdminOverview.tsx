@@ -74,6 +74,10 @@ const StyledButton = styled.button`
     margin: 1vh 1vw;
 `;
 
+const StyledLink = styled.a`
+
+`;
+
 export const AdminOverview = () => {
     const [showLoginBox, setShowLoginBox] = useState(false);
     const [offerId, setOfferId] = useState(-1);
@@ -97,8 +101,8 @@ export const AdminOverview = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                admin_id:admin_id,
-                token:token,
+                admin_id: admin_id,
+                token: token,
                 applicationid: id,
             }),
         })
@@ -107,7 +111,7 @@ export const AdminOverview = () => {
             })
             .then((status) => {
                 console.log(status);
-                if (status == 200) {                    
+                if (status == 200) {
                     //set cookie
                     Router.reload();
                 }
@@ -157,7 +161,7 @@ export const AdminOverview = () => {
                             {application.application_id}
                         </StyledAdminTableContent>
                         <StyledAdminTableContent>
-                            {application.name}
+                            <StyledLink href={"/details/" + application.application_id} target="_blank">{application.name}</StyledLink>
                         </StyledAdminTableContent>
                         <StyledAdminTableContent>
                             {application.company_name}

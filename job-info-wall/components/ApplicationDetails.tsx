@@ -3,7 +3,7 @@ import { theme } from '../theme';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import axios from 'axios';
-import {device} from '../devices';
+import { device } from '../devices';
 
 const { colors, fonts } = theme;
 
@@ -15,7 +15,7 @@ const JobDetailsLayout = styled.div`
     font-family: ${fonts.primaryFont};
     color: ${colors.primaryBackgroundColor};
     font-weight: bold;
-    @media ${device.desktop}{
+    @media ${device.desktop} {
         padding: 15vh 15vw;
     }
 `;
@@ -45,6 +45,25 @@ const StyledDates = styled.p`
     line-height: 2rem;
 `;
 
+const IframeLayout = styled.div`
+    height: 90vw;
+    @media ${device.desktop} {
+        height: 70vw;
+    }
+`;
+
+const StyledLink = styled.a`
+    display: block;
+    margin-top: 20px;
+    text-decoration: underline;
+    transition: all 200ms;
+    :hover {
+        background: linear-gradient(90.92deg, #ea4328 0.13%, #ffd400 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+`;
+
 function formatDate(date) {
     date = new Date(date);
     return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
@@ -71,11 +90,16 @@ export const ApplicationDetails = ({ applicationId }) => {
                 <br></br>Bis: {formatDate(content?.expire_date)}
             </StyledDates>
             <p>{content?.description}</p>
-            <iframe
-                src={content?.pdf_src}
-                width="100%"
-                height="1000px"
-            ></iframe>
+            <IframeLayout>
+                <iframe
+                    src={content?.pdf_src + '#view=fit'}
+                    width="100%"
+                    height="100%"
+                ></iframe>
+                <StyledLink href={content?.pdf_src} target="_blank">
+                    PDF in neuem Tab öffnen
+                </StyledLink>
+            </IframeLayout>
         </JobDetailsLayout>
     );
 };

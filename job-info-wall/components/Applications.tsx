@@ -1,19 +1,12 @@
 import React from 'react';
-import { Heading, Box, Image } from 'rebass';
 import { theme } from '../theme';
 import styled from 'styled-components';
-import { MainIcon } from '../components/MainIcon';
-import { CurrentPageName } from '../components/CurrentPageName';
 import { ApplicationBox } from '../components/ApplicationBox';
-import { GetStaticProps, GetServerSideProps } from 'next';
 import useSWR from 'swr';
-import { userInfo } from 'os';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState } from 'react';
 import axios from 'axios';
 import store from '../redux/store';
 import { device } from '../devices';
-import { SearchBar } from 'react-native-elements';
 
 const { colors, fonts } = theme;
 
@@ -46,8 +39,7 @@ export const Applications = ({}) => {
     ).data;
 
     let posts = useSWR(
-        store.getState().state != undefined &&
-            store.getState().state.typeId != -1
+        store.getState() != undefined && store.getState().state.typeId != -1
             ? 'http://localhost:4000/api/application/getSpecificOffers/' +
                   store.getState().state.typeId
             : 'http://localhost:4000/api/application/getAllOffers/',
@@ -71,14 +63,6 @@ export const Applications = ({}) => {
 
     return (
         <ApplicationLayout>
-            <SearchBar
-                round
-                searchIcon={{ size: 24 }}
-                onChangeText={(text) => updateApplications(text)}
-                onClear={(text) => updateApplications('')}
-                placeholder="Type Here..."
-                value={this.state.search}
-            />
             {posts?.map((application, index) => {
                 let applicationType = applicationTypes?.find(
                     (applicationType) =>

@@ -57,10 +57,10 @@ export const Navigation: React.FC<Props> = ({ showNavigationSelectBox }) => {
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
-    function changeContent() {
+    function changeContent(e) {
         store.dispatch({
             type: 'changeId',
-            typeId: document.getElementById('typeChanger').value,
+            typeId: e.target.value,
         });
     }
 
