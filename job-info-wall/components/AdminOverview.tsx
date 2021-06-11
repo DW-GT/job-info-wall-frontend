@@ -51,8 +51,7 @@ const DeleteApplicationLayout = styled.div`
 `;
 
 const DeleteApplicationBox = styled.div`
-    width: 50vw;
-    height: 50vh;
+    padding: 10vh 10vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,6 +75,14 @@ const StyledButton = styled.button`
 
 const StyledLink = styled.a`
 
+`;
+
+const StyledAddButton = styled.a`
+    transition: all 200ms;
+    line-height: 2.5rem;
+    :hover {
+        font-size: 1.5rem;
+    }
 `;
 
 export const AdminOverview = () => {
@@ -120,7 +127,7 @@ export const AdminOverview = () => {
 
     return (
         <AdminOverviewLayout>
-            <a href="/addApplication">+</a>
+            <StyledAddButton href="/addApplication">+</StyledAddButton>
             {showLoginBox ? (
                 <DeleteApplicationLayout>
                     <DeleteApplicationBox>

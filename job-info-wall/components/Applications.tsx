@@ -26,6 +26,31 @@ const ApplicationLayout = styled.div`
     }
 `;
 
+const SearchInputLayout = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const StyledInputField = styled.input`
+    margin: 3vh 0;
+    border-radius: 10px;
+    padding: 2vh 2vw;
+    border: none;
+    box-shadow: 0px 0px 19px rgb(0 0 0 / 40%);
+    font-size: 1rem;
+    transition: all 200ms;
+
+    :hover {
+        box-shadow: 0px 0px 24px rgb(0 0 0 / 40%);
+    }
+    :focus {
+        box-shadow: 0px 0px 14px rgb(0 0 0 / 30%);
+    }
+`;
+
 function formatDate(date) {
     date = new Date(date);
     return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
@@ -39,8 +64,8 @@ export const Applications = ({}) => {
     ).data;
 
     let posts = useSWR(
-
-        store.getState().state != undefined && store.getState().state.typeId != -1
+        store.getState().state != undefined &&
+            store.getState().state.typeId != -1
             ? 'http://localhost:4000/api/application/getSpecificOffers/' +
                   store.getState().state.typeId
             : 'http://localhost:4000/api/application/getAllOffers/',
@@ -49,50 +74,54 @@ export const Applications = ({}) => {
 
     const [val, setVal] = useState();
 
-    const unsubscribe = store.subscribe(() => {        
+    const unsubscribe = store.subscribe(() => {
         setVal(store.getState().state.typeId);
     });
 
     const [postsFiltered, setPosts] = useState('');
 
     function updateApplications() {
-
         posts = posts.find((application) => {
-                return application.name.includes(text);
-            });
-        
+            return application.name.includes(text);
+        });
     }
 
     return (
         <div>
-            <input type="text" onKeyDown={(e) => setPosts(e.target.value)}></input><button onClick={() => updateApplications}>Search</button>
-        <ApplicationLayout>
-            {posts?.map((application, index) => {
-                let applicationType = applicationTypes?.find(
-                    (applicationType) =>
-                        applicationType.applicationtype_id ==
-                        application.applicationtype_id,
-                );
-                let applicationTypeName;
-                if (applicationType) {
-                    applicationTypeName = applicationType.name;
-                } else {
-                    applicationTypeName = '';
-                }
-                return (
-                    <ApplicationBox
-                        applicationHeadline={application.name}
-                        applicationText={application.description}
-                        companyName={application.company_name}
-                        startDate={formatDate(application.creation_date)}
-                        endDate={formatDate(application.expire_date)}
-                        applicationType={applicationTypeName}
-                        key={index}
-                        applicationId={application.application_id}
-                    ></ApplicationBox>
-                );
-            })}
-        </ApplicationLayout>
+            <SearchInputLayout>
+                <StyledInputField
+                    type="text"
+                    placeholder="Suchen..."
+                    onKeyDown={(e) => setPosts(e.target.value)}
+                ></StyledInputField>
+            </SearchInputLayout>
+            <ApplicationLayout>
+                {posts?.map((application, index) => {
+                    let applicationType = applicationTypes?.find(
+                        (applicationType) =>
+                            applicationType.applicationtype_id ==
+                            application.applicationtype_id,
+                    );
+                    let applicationTypeName;
+                    if (applicationType) {
+                        applicationTypeName = applicationType.name;
+                    } else {
+                        applicationTypeName = '';
+                    }
+                    return (
+                        <ApplicationBox
+                            applicationHeadline={application.name}
+                            applicationText={application.description}
+                            companyName={application.company_name}
+                            startDate={formatDate(application.creation_date)}
+                            endDate={formatDate(application.expire_date)}
+                            applicationType={applicationTypeName}
+                            key={index}
+                            applicationId={application.application_id}
+                        ></ApplicationBox>
+                    );
+                })}
+            </ApplicationLayout>
         </div>
     );
 };
