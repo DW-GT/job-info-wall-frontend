@@ -43,6 +43,10 @@ const FooterLinkBoxLayout = styled.div`
 
 const StyledFooterLink = styled.a`
     margin: 1vh 0;
+    transition: all 200ms;
+    :hover{
+        text-decoration: underline;
+    }
 `;
 
 const FooterLogoLayout = styled.div`
@@ -58,6 +62,10 @@ const StyledLogoutButton = styled.button`
     font-size: 1rem;
     margin: 1vh 0;
     cursor: pointer;
+    transition: all 200ms;
+    :hover{
+        text-decoration: underline;
+    }
 `;
 
 export const Footer = ({}) => {
@@ -132,12 +140,14 @@ export const Footer = ({}) => {
                 )}
             </FooterLinkBoxLayout>
             <FooterLogoLayout>
-                <Image
-                    alt="Htl Logo"
-                    width={400}
-                    height={100}
-                    src="/htl-leonding-logo.svg"
-                ></Image>
+                <a href="https://www.htl-leonding.at" target="_blank">
+                    <Image
+                        alt="Htl Logo"
+                        width={400}
+                        height={100}
+                        src="/htl-leonding-logo.svg"
+                    ></Image>
+                </a>
             </FooterLogoLayout>
         </FooterBoxLayout>
     );

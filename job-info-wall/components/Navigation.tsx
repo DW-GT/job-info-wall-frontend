@@ -44,7 +44,14 @@ const StyledSelectBox = styled.select`
     background: url('/mainIcon.svg') no-repeat right rgba(0, 0, 0, 0);
     -webkit-appearance: none;
     background-position-x: calc(50vw-30px);
+    position: relative;
     cursor: pointer;
+    transition: all 500ms;
+
+    :focus {
+        background-image: url(/mainIconRotated.svg);
+        background-position-x: calc(50vw-30px);
+    }
 `;
 
 const StyledOption = styled.option`
