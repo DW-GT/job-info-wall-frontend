@@ -38,14 +38,8 @@ export const Applications = ({}) => {
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
-    let posts = useSWR(
 
-        store.getState().state != undefined && store.getState().state.typeId != -1
-            ? 'http://localhost:4000/api/application/getSpecificOffers/' +
-                  store.getState().state.typeId
-            : 'http://localhost:4000/api/application/getAllOffers/',
-        (url: string) => axios(url).then((r) => r.data),
-    ).data;
+    
 
     const [val, setVal] = useState();
 
@@ -53,21 +47,39 @@ export const Applications = ({}) => {
         setVal(store.getState().state.typeId);
     });
 
-    const [postsFiltered, setPosts] = useState('');
 
-    function updateApplications() {
+    const [postsFiltered, setPosts] = useState();
 
-        posts = posts.find((application) => {
-                return application.name.includes(text);
-            });
+    
+    let posts = useSWR(
+        store.getState().state != undefined && store.getState().state.typeId != -1
+            ? 'http://localhost:4000/api/application/getSpecificOffers/' +
+                  store.getState().state.typeId
+            : 'http://localhost:4000/api/application/getAllOffers/',
+        (url: string) => axios(url).then((r) => {
+            setPosts(r.data);
+            return r.data}),
+    ).data;
+
+    console.log(posts);
+
+    function updateApplications(text:String) {
+        if(text.length === 0){
+            setPosts(posts);
+        }
+        let temp = posts.filter((application) => {
+            return application.name.toLowerCase().includes(text.toLowerCase()) || application.description.toLowerCase().includes(text.toLowerCase()) || application.company_name.toLowerCase().includes(text.toLowerCase());
+        });
         
+        setPosts(temp); 
     }
 
     return (
         <div>
-            <input type="text" onKeyDown={(e) => setPosts(e.target.value)}></input><button onClick={() => updateApplications}>Search</button>
+            <input type="text" onChange={e => { updateApplications(e.currentTarget.value); }} ></input>
         <ApplicationLayout>
-            {posts?.map((application, index) => {
+            {
+            postsFiltered?.map((application, index) => {
                 let applicationType = applicationTypes?.find(
                     (applicationType) =>
                         applicationType.applicationtype_id ==
