@@ -37,7 +37,7 @@ const SearchInputLayout = styled.div`
 const StyledInputField = styled.input`
     margin: 3vh 0;
     border-radius: 10px;
-    padding: 2vh 2vw;
+    padding: 2vh 40vw 2vh 5vw;
     border: none;
     box-shadow: 0px 0px 19px rgb(0 0 0 / 40%);
     font-size: 1rem;
@@ -48,6 +48,14 @@ const StyledInputField = styled.input`
     }
     :focus {
         box-shadow: 0px 0px 14px rgb(0 0 0 / 30%);
+    }
+
+    @media ${device.tablet} {
+        padding: 2vh 8vw 2vh 2vw;
+    }
+
+    @media ${device.desktop} {
+        padding: 2vh 15.5vw 2vh 1.5vw;
     }
 `;
 
@@ -97,7 +105,14 @@ export const Applications = ({}) => {
 
     return (
         <div>
-            <input type="text" onChange={e => { updateApplications(e.currentTarget.value); }} ></input>
+
+            <SearchInputLayout>
+                <StyledInputField
+                    type="text"
+                    placeholder="Suchen..."
+                    onChange={e => { updateApplications(e.currentTarget.value); }}
+                ></StyledInputField>
+            </SearchInputLayout>
         <ApplicationLayout>
             {
             postsFiltered?.map((application, index) => {

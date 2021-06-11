@@ -37,10 +37,12 @@ const StyledSelectBox = styled.select`
     color: ${colors.secondaryColor};
     font-size: 1.3rem;
     font-weight: bold;
+    text-align: center;
+    text-align-last: center;
     border: none;
     font-family: ${fonts.primaryFont};
     padding: 5px;
-    padding-right: 50px;
+    padding-right: 40px;
     background: url('/mainIcon.svg') no-repeat right rgba(0, 0, 0, 0);
     -webkit-appearance: none;
     background-position-x: calc(50vw-30px);
@@ -56,6 +58,8 @@ const StyledSelectBox = styled.select`
 
 const StyledOption = styled.option`
     background-color: ${colors.primaryBackgroundColor};
+    text-align: center;
+    text-align-last: center;
 `;
 
 export const Navigation: React.FC<Props> = ({ showNavigationSelectBox }) => {
