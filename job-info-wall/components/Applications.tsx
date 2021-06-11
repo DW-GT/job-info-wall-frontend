@@ -39,7 +39,8 @@ export const Applications = ({}) => {
     ).data;
 
     let posts = useSWR(
-        store.getState() != undefined && store.getState().state.typeId != -1
+
+        store.getState().state != undefined && store.getState().state.typeId != -1
             ? 'http://localhost:4000/api/application/getSpecificOffers/' +
                   store.getState().state.typeId
             : 'http://localhost:4000/api/application/getAllOffers/',
@@ -48,20 +49,23 @@ export const Applications = ({}) => {
 
     const [val, setVal] = useState();
 
-    const unsubscribe = store.subscribe(() => {
+    const unsubscribe = store.subscribe(() => {        
         setVal(store.getState().state.typeId);
     });
 
-    function updateApplications(text: string) {
-        console.log(text);
-        setVal(
-            posts.find((application) => {
+    const [postsFiltered, setPosts] = useState('');
+
+    function updateApplications() {
+
+        posts = posts.find((application) => {
                 return application.name.includes(text);
-            }),
-        );
+            });
+        
     }
 
     return (
+        <div>
+            <input type="text" onKeyDown={(e) => setPosts(e.target.value)}></input><button onClick={() => updateApplications}>Search</button>
         <ApplicationLayout>
             {posts?.map((application, index) => {
                 let applicationType = applicationTypes?.find(
@@ -89,5 +93,6 @@ export const Applications = ({}) => {
                 );
             })}
         </ApplicationLayout>
+        </div>
     );
 };
