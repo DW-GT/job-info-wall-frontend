@@ -7,6 +7,9 @@ import { device } from '../devices';
 import Router from 'next/router';
 import cookie from 'js-cookie';
 
+
+
+
 const { colors, fonts } = theme;
 
 const JobDetailsLayout = styled.div`
@@ -110,6 +113,8 @@ export const ApplicationAdd = () => {
     const [endDate, setEndDate] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState(1);
+    const[file,setFile] = useState<FileList | null>();
+    
     const applicationTypes = useSWR(
         `http://localhost:4000/api/application/getOfferTypes/`,
         (url: string) => axios(url).then((r) => r.data),
@@ -119,8 +124,30 @@ export const ApplicationAdd = () => {
     const admin_id = cookie.get('adminId');
     function handleSubmit(e) {
         e.preventDefault();
-        //call api
-        fetch('http://localhost:4000/api/application/addOffer', {
+
+        let data = new FormData();
+
+        let fileToUpload= file[0];
+        
+
+        data.append("file", fileToUpload);
+        data.append("name","test");
+
+        console.log(data.get("file"));
+
+        
+        
+        fetch('http://localhost:4000/api/application/upload',{
+            method: 'POST',
+            body: data
+        }).then((r) => {
+            console.log("status");
+            return r.status;
+        })
+        .then((status) => {
+            if (status == 200) {
+
+                fetch('http://localhost:4000/api/application/addOffer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +167,10 @@ export const ApplicationAdd = () => {
                     lastupdate_date: new Date().toISOString(),
                     applicationtype: type,
                 },
-            }),
+            },
+
+            ),
+            
         })
             .then((r) => {
                 return r.status;
@@ -154,6 +184,15 @@ export const ApplicationAdd = () => {
                     );
                 }
             });
+                
+            } else {
+                setLoginError(
+                    'Der Eintrag konnte nicht hinzugefügt werden',
+                );
+            }
+        });
+
+        
     }
 
     return (
@@ -161,7 +200,7 @@ export const ApplicationAdd = () => {
             <div>
                 <StyledJobHeadline>Hinzufügen</StyledJobHeadline>
                 <StyledSpaceBar></StyledSpaceBar>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <br />
                     <label>Name:</label>
                     <br />
@@ -196,12 +235,13 @@ export const ApplicationAdd = () => {
                         onChange={(e) => setTelefon(e.target.value)}
                     ></StyledInputField>
                     <br />
-                    <label>PDF Link:</label>
+                    <label>PDF:</label>
                     <br />
                     <StyledInputField
+                        name="file"
+                        type="file"
                         placeholder="PDF Link"
-                        value={pdfSrc}
-                        onChange={(e) => setPdfSrc(e.target.value)}
+                        onChange={(e) => setFile(e.target.files)}
                     ></StyledInputField>
                     <br />
                     <label>End-Datum:</label>
