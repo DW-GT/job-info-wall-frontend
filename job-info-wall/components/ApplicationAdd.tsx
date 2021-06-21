@@ -131,7 +131,6 @@ export const ApplicationAdd = () => {
         
 
         data.append("file", fileToUpload);
-        data.append("name","test");
 
         console.log(data.get("file"));
 
@@ -161,7 +160,7 @@ export const ApplicationAdd = () => {
                     company_name: company,
                     email,
                     telefon,
-                    pdf_src: pdfSrc,
+                    pdf_src: file[0].name,
                     creation_date: new Date().toISOString(),
                     expire_date: addMonths(new Date(), 6),
                     lastupdate_date: new Date().toISOString(),
