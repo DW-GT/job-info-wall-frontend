@@ -133,21 +133,13 @@ export const ApplicationEdit = ({ applicationId }) => {
         setEmail(content?.email);
         setTelefon(content?.telefon);
         setType(applicationType?.applicationtype_id);
-        setFile(content?.file);
     }
+
     function handleSubmit(e) {
         e.preventDefault();
         //call api
 
-        
-        let data = new FormData();
-
-        let fileToUpload= file[0];
-        
-        data.append("file", fileToUpload);
-
-        if(file[0] == content.file){
-
+        if(file == undefined){
             fetch('http://localhost:4000/api/application/editOffer', {
                 method: 'PUT',
                 headers: {
@@ -163,7 +155,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                         company_name: company,
                         email,
                         telefon,
-                        pdf_src: file[0].name,
+                        pdf_src: content.name,
                         creation_date: content.creation_date,
                         expire_date: content.expire_date,
                         lastupdate_date: new Date().toISOString(),
@@ -182,6 +174,13 @@ export const ApplicationEdit = ({ applicationId }) => {
                 }
             });
         }else{
+                    
+            let data = new FormData();
+
+            let fileToUpload= file[0];
+        
+            data.append("file", fileToUpload);
+
             fetch('http://localhost:4000/api/application/upload',{
             method: 'POST',
             body: data
