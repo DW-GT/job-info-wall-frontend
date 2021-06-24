@@ -92,11 +92,11 @@ export const ApplicationDetails = ({ applicationId }) => {
             <p>{content?.description}</p>
             <IframeLayout>
                 <iframe
-                    src={content?.pdf_src + '#view=fit'}
+                    src={"http://localhost:4000"+content?.pdf_src + '#view=fit'}
                     width="100%"
                     height="100%"
                 ></iframe>
-                <StyledLink href={content?.pdf_src} target="_blank">
+                <StyledLink href={"http://localhost:4000"+content?.pdf_src} target="_blank">
                     PDF in neuem Tab öffnen
                 </StyledLink>
             </IframeLayout>

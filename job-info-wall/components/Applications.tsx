@@ -79,7 +79,7 @@ export const Applications = ({}) => {
     });
 
 
-    const [postsFiltered, setPosts] = useState();
+    const [postsFiltered, setPosts] = useState([]);
 
     
     let posts = useSWR(

@@ -101,10 +101,12 @@ export const ApplicationEdit = ({ applicationId }) => {
     const [email, setEmail] = useState('');
     const [telefon, setTelefon] = useState('');
     const [company, setCompany] = useState('');
-    const [pdfSrc, setPdfSrc] = useState('');
     const [endDate, setEndDate] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState('');
+    const[file,setFile] = useState<FileList | null>();
+
+
     const applicationTypes = useSWR(
         `http://localhost:4000/api/application/getOfferTypes/`,
         (url: string) => axios(url).then((r) => r.data),
@@ -121,42 +123,54 @@ export const ApplicationEdit = ({ applicationId }) => {
         (applicationType) =>
             applicationType.applicationtype_id == content?.applicationtype_id,
     );
+
+
     if (content && applicationTypes && name == '') {
         setName(content?.name);
         setCompany(content?.company_name);
-        setPdfSrc(content?.pdf_src);
         setEndDate(getDateFormatted(content?.expire_date));
         setDescription(content?.description);
         setEmail(content?.email);
         setTelefon(content?.telefon);
         setType(applicationType?.applicationtype_id);
+        setFile(content?.file);
     }
     function handleSubmit(e) {
         e.preventDefault();
         //call api
-        fetch('http://localhost:4000/api/application/editOffer', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                admin_id,
-                token,
-                application: {
-                    application_id: content.application_id,
-                    name,
-                    description,
-                    company_name: company,
-                    email,
-                    telefon,
-                    pdf_src: pdfSrc,
-                    creation_date: content.creation_date,
-                    expire_date: content.expire_date,
-                    lastupdate_date: new Date().toISOString(),
-                    applicationType: type,
+
+        
+        let data = new FormData();
+
+        let fileToUpload= file[0];
+        
+        data.append("file", fileToUpload);
+
+        if(file[0] == content.file){
+
+            fetch('http://localhost:4000/api/application/editOffer', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            }),
-        })
+                body: JSON.stringify({
+                    admin_id,
+                    token,
+                    application: {
+                        application_id: content.application_id,
+                        name,
+                        description,
+                        company_name: company,
+                        email,
+                        telefon,
+                        pdf_src: file[0].name,
+                        creation_date: content.creation_date,
+                        expire_date: content.expire_date,
+                        lastupdate_date: new Date().toISOString(),
+                        applicationType: type,
+                    },
+                }),
+            })
             .then((r) => {
                 return r.status;
             })
@@ -167,6 +181,55 @@ export const ApplicationEdit = ({ applicationId }) => {
                     setLoginError('Der Eintrag konnte nicht gespeichert werden');
                 }
             });
+        }else{
+            fetch('http://localhost:4000/api/application/upload',{
+            method: 'POST',
+            body: data
+        }).then((r) => {
+            console.log("status");
+            return r.status;
+        }).then((status) => {
+            if (status == 200){
+                fetch('http://localhost:4000/api/application/editOffer', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        admin_id,
+                        token,
+                        application: {
+                            application_id: content.application_id,
+                            name,
+                            description,
+                            company_name: company,
+                            email,
+                            telefon,
+                            pdf_src: file[0].name,
+                            creation_date: content.creation_date,
+                            expire_date: content.expire_date,
+                            lastupdate_date: new Date().toISOString(),
+                            applicationType: type,
+                        },
+                    }),
+                })
+                .then((r) => {
+                    return r.status;
+                })
+                .then((status) => {
+                    if (status == 200) {
+                        Router.push('/adminOverview');
+                    } else {
+                        setLoginError('Der Eintrag konnte nicht gespeichert werden');
+                    }
+                });
+
+            }
+        })
+        }
+
+        
+        
     }
 
     return (
@@ -212,9 +275,10 @@ export const ApplicationEdit = ({ applicationId }) => {
                     <label>PDF Link:</label>
                     <br />
                     <StyledInputField
-                        placeholder="PDF Link"
-                        value={pdfSrc}
-                        onChange={(e) => setPdfSrc(e.target.value)}
+                        name="file"
+                        type="file"
+                        placeholder="PDF"
+                        onChange={(e) => setFile(e.target.files)}
                     ></StyledInputField>
                     <br />
                     <label>End-Datum:</label>
