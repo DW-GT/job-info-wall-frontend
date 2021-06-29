@@ -138,8 +138,8 @@ export const ApplicationEdit = ({ applicationId }) => {
     function handleSubmit(e) {
         e.preventDefault();
         //call api
-
         if(file == undefined){
+            console.log("The file hasn't changed'")
             fetch('http://localhost:4000/api/application/editOffer', {
                 method: 'PUT',
                 headers: {
@@ -155,7 +155,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                         company_name: company,
                         email,
                         telefon,
-                        pdf_src: content.name,
+                        pdf_src: content.application_id,
                         creation_date: content.creation_date,
                         expire_date: content.expire_date,
                         lastupdate_date: new Date().toISOString(),
@@ -174,21 +174,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                 }
             });
         }else{
-                    
-            let data = new FormData();
-
-            let fileToUpload= file[0];
-        
-            data.append("file", fileToUpload);
-
-            fetch('http://localhost:4000/api/application/upload',{
-            method: 'POST',
-            body: data
-        }).then((r) => {
-            console.log("status");
-            return r.status;
-        }).then((status) => {
-            if (status == 200){
+            console.log("changing the file");
                 fetch('http://localhost:4000/api/application/editOffer', {
                     method: 'PUT',
                     headers: {
@@ -204,32 +190,48 @@ export const ApplicationEdit = ({ applicationId }) => {
                             company_name: company,
                             email,
                             telefon,
-                            pdf_src: file[0].name,
+                            pdf_src: content.application_id,
                             creation_date: content.creation_date,
                             expire_date: content.expire_date,
                             lastupdate_date: new Date().toISOString(),
                             applicationType: type,
                         },
                     }),
-                })
-                .then((r) => {
+                }).then((r) => {
                     return r.status;
                 })
                 .then((status) => {
+                    console.log("stats work for putting the file");
+                    console.log(status);
                     if (status == 200) {
-                        Router.push('/adminOverview');
-                    } else {
-                        setLoginError('Der Eintrag konnte nicht gespeichert werden');
+                        console.log("should work for putting the file");
+                    let data = new FormData();
+    
+                    let fileToUpload= file[0];
+            
+                    data.append("file", fileToUpload);
+                    data.append("id",content.application_id);
+                    
+                    fetch('http://localhost:4000/api/application/upload',{
+                    method: 'POST',
+                    body: data
+                    }).then((r) => {
+                        return r.status;
+                    }).then((status) => {
+                        if (status == 200){
+                            Router.push('/adminOverview');
+                        } else {
+                            setLoginError('Der Eintrag konnte nicht gespeichert werden');
+                        }
+    
+                    });
                     }
                 });
-
-            }
-        })
         }
-
+        }
         
         
-    }
+    
 
     return (
         <JobDetailsLayout>
@@ -277,6 +279,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                         name="file"
                         type="file"
                         placeholder="PDF"
+                        accept=".pdf"
                         onChange={(e) => setFile(e.target.files)}
                     ></StyledInputField>
                     <br />

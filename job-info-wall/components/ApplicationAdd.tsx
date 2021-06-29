@@ -125,28 +125,10 @@ export const ApplicationAdd = () => {
     function handleSubmit(e) {
         e.preventDefault();
 
-        let data = new FormData();
-
-        let fileToUpload= file[0];
-        
-
-        data.append("file", fileToUpload);
-
-        console.log(data.get("file"));
-
+ 
         
         
-        fetch('http://localhost:4000/api/application/upload',{
-            method: 'POST',
-            body: data
-        }).then((r) => {
-            console.log("status");
-            return r.status;
-        })
-        .then((status) => {
-            if (status == 200) {
-
-                fetch('http://localhost:4000/api/application/addOffer', {
+        fetch('http://localhost:4000/api/application/addOffer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -166,30 +148,48 @@ export const ApplicationAdd = () => {
                     lastupdate_date: new Date().toISOString(),
                     applicationtype: type,
                 },
-            },
+            },),
 
-            ),
-            
-        })
-            .then((r) => {
-                return r.status;
-            })
-            .then((status) => {
-                if (status == 200) {
-                    Router.push('/adminOverview');
+            }).then((r) =>{
+                if(r.status == 200){
+                    return r.json();
+                }
+            }
+            )
+            .then((id) => {
+                if (id) {
+                    let data = new FormData();
+
+                    let fileToUpload= file[0];
+                    
+                    data.append("file", fileToUpload);
+                    data.append("id",id);
+
+                    fetch('http://localhost:4000/api/application/upload',{
+                    method: 'POST',
+                    body: data
+                    }).then((r) => {
+                        console.log("status");
+                        return r.status;
+                    })
+                    .then((status) => {
+                        if (status == 200) {
+                            Router.push('/adminOverview');
+                        } else {
+                            setLoginError(
+                                'Der Eintrag konnte nicht hinzugefügt werden',
+                            );
+                        }
+                    });
                 } else {
                     setLoginError(
                         'Der Eintrag konnte nicht hinzugefügt werden',
                     );
                 }
             });
-                
-            } else {
-                setLoginError(
-                    'Der Eintrag konnte nicht hinzugefügt werden',
-                );
-            }
-        });
+
+
+        
 
         
     }
@@ -238,6 +238,7 @@ export const ApplicationAdd = () => {
                     <br />
                     <StyledInputField
                         name="file"
+                        accept=".pdf"
                         type="file"
                         placeholder="PDF Link"
                         onChange={(e) => setFile(e.target.files)}
