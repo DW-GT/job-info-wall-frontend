@@ -10,28 +10,17 @@ import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { Applications } from '../components/Applications';
 import { Footer } from '../components/Footer';
+import { Login } from '../components/Login';
 import {Stretcher } from '../components/Stretcher';
 
-
-
-const MainPage = () =>{
-    function updateApplications(text: string) {
-        console.log(text);
-        setVal(
-            posts.find((application) => {
-                return application.name.includes(text);
-            }),
-        );
-    }
-    return(
-    
+const LoginPage = () => (
     <ThemeProvider theme={theme}>
-        <Navigation showNavigationSelectBox={true}></Navigation>
+        <Navigation></Navigation>
         <Stretcher>
-        <Applications ></Applications>
+        <Login></Login>
         </Stretcher>
         <Footer></Footer>
     </ThemeProvider>
-)};
+);
 
-export default MainPage;
+export default LoginPage;

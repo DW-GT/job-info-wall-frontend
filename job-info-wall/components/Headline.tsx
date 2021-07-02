@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading } from 'rebass';
-import {Color} from '../Color.enum';
 import styled from 'styled-components';
 
 type Props = {
