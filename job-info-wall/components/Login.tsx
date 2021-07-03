@@ -69,7 +69,7 @@ export const Login = () => {
     function handleSubmit(e) {
         e.preventDefault();
         //call api
-        fetch('http://localhost:4000/api/application/getLoginToken', {
+        fetch(process.env.API_ADRESS+'/api/application/getLoginToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

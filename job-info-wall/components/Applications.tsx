@@ -67,7 +67,7 @@ function formatDate(date) {
 export const Applications = ({}) => {
     const [inputValue, setInputValue] = useState('');
     const applicationTypes = useSWR(
-        'http://localhost:4000/api/application/getOfferTypes/',
+        process.env.API_ADRESS+'/api/application/getOfferTypes/',
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
@@ -84,9 +84,9 @@ export const Applications = ({}) => {
     
     let posts = useSWR(
         store.getState().state != undefined && store.getState().state.typeId != -1
-            ? 'http://localhost:4000/api/application/getSpecificOffers/' +
+            ? process.env.API_ADRESS+'/api/application/getSpecificOffers/' +
                   store.getState().state.typeId
-            : 'http://localhost:4000/api/application/getAllOffers/',
+            : process.env.API_ADRESS+'/api/application/getAllOffers/',
         (url: string) => axios(url).then((r) => {
             setPosts(r.data);
             return r.data}),

@@ -140,7 +140,7 @@ export const ApplicationEdit = ({ applicationId }) => {
         //call api
         if(file == undefined){
             console.log("The file hasn't changed'")
-            fetch('http://localhost:4000/api/application/editOffer', {
+            fetch(process.env.API_ADRESS+'/api/application/editOffer', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export const ApplicationEdit = ({ applicationId }) => {
             });
         }else{
             console.log("changing the file");
-                fetch('http://localhost:4000/api/application/editOffer', {
+                fetch(process.env.API_ADRESS+'/api/application/editOffer', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -212,7 +212,7 @@ export const ApplicationEdit = ({ applicationId }) => {
                     data.append("file", fileToUpload);
                     data.append("id",content.application_id);
                     
-                    fetch('http://localhost:4000/api/application/upload',{
+                    fetch(process.env.API_ADRESS+'/api/application/upload',{
                     method: 'POST',
                     body: data
                     }).then((r) => {
