@@ -69,7 +69,8 @@ export const Login = () => {
     function handleSubmit(e) {
         e.preventDefault();
         //call api
-        fetch(process.env.API_ADRESS+'/api/application/getLoginToken', {
+        console.log(process.env.NEXT_PUBLIC_API_ADRESS);
+        fetch(process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/getLoginToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

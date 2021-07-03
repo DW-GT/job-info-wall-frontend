@@ -64,7 +64,7 @@ const StyledOption = styled.option`
 
 export const Navigation: React.FC<Props> = ({ showNavigationSelectBox }) => {
     const applicationTypes = useSWR(
-        process.env.API_ADRESS+'/api/application/getOfferTypes/',
+        process.env.NEXT_PUBLIC_NEXT_PUBLIC_API_ADRESS+'/api/application/getOfferTypes/',
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
