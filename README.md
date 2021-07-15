@@ -6,9 +6,9 @@ It should make life easier for students, companies, teachers. It's main purpose 
 # Workflow
 So this project will be created with the framework React. There are 2 repositories to this project, because we wanted to split the front and back end so that the code and structure can be cleaner.
 
-[Frontend](https://github.com/d-woegerbauer/job-info-wall-frontend)
+[Frontend](https://github.com/dw-gt/job-info-wall-frontend)
 
-[Backend](https://github.com/d-woegerbauer/job-info-wall-backend)
+[Backend](https://github.com/dw-gt/job-info-wall-backend)
 
 [Timelog](https://docs.google.com/spreadsheets/d/1bTbBqZqGvOnTD1WTLyDGUHa8uu4knvn3BS996A9__d4/edit#gid=0)
 
