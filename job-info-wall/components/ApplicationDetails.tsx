@@ -71,12 +71,12 @@ function formatDate(date) {
 
 export const ApplicationDetails = ({ applicationId }) => {
     const applicationTypes = useSWR(
-        `http://localhost:4000/api/application/getOfferTypes/`,
+        process.env.NEXT_PUBLIC_API_ADRESS+`/api/application/getOfferTypes/`,
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
     const content = useSWR(
-        `http://localhost:4000/api/application/getOffer/` + applicationId,
+        process.env.NEXT_PUBLIC_API_ADRESS+`/api/application/getOffer/` + applicationId,
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
@@ -92,11 +92,11 @@ export const ApplicationDetails = ({ applicationId }) => {
             <p>{content?.description}</p>
             <IframeLayout>
                 <iframe
-                    src={"http://localhost:4000"+content?.pdf_src + '#view=fit'}
+                    src={process.env.NEXT_PUBLIC_API_ADRESS+content?.pdf_src + '#view=fit'}
                     width="100%"
                     height="100%"
                 ></iframe>
-                <StyledLink href={"http://localhost:4000"+content?.pdf_src} target="_blank">
+                <StyledLink href={process.env.NEXT_PUBLIC_API_ADRESS+content?.pdf_src} target="_blank">
                     PDF in neuem Tab öffnen
                 </StyledLink>
             </IframeLayout>

@@ -116,7 +116,7 @@ export const ApplicationAdd = () => {
     const[file,setFile] = useState<FileList | null>();
     
     const applicationTypes = useSWR(
-        `http://localhost:4000/api/application/getOfferTypes/`,
+        process.env.NEXT_PUBLIC_API_ADRESS+`/api/application/getOfferTypes/`,
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
@@ -128,7 +128,7 @@ export const ApplicationAdd = () => {
  
         
         
-        fetch('http://localhost:4000/api/application/addOffer', {
+        fetch(process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/addOffer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ export const ApplicationAdd = () => {
                     data.append("file", fileToUpload);
                     data.append("id",id);
 
-                    fetch('http://localhost:4000/api/application/upload',{
+                    fetch(process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/upload',{
                     method: 'POST',
                     body: data
                     }).then((r) => {

@@ -96,13 +96,13 @@ export const AdminOverview = () => {
     }
 
     const applications = useSWR(
-        'http://localhost:4000/api/application/getAllOffers/',
+        process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/getAllOffers/',
         (url: string) => axios(url).then((r) => r.data),
     ).data;
 
     function deleteOffer(id: number) {
         //call api
-        fetch('http://localhost:4000/api/application/deleteOffer', {
+        fetch(process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/deleteOffer', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -111,7 +111,7 @@ export const Footer = ({}) => {
                             setLoggedIn(false);
                             //call api
                             fetch(
-                                'http://localhost:4000/api/application/logOut',
+                                process.env.NEXT_PUBLIC_API_ADRESS+'/api/application/logOut',
                                 {
                                     method: 'DELETE',
                                     headers: {

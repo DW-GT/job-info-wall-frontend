@@ -15,14 +15,7 @@ import {Stretcher } from '../components/Stretcher';
 
 
 const MainPage = () =>{
-    function updateApplications(text: string) {
-        console.log(text);
-        setVal(
-            posts.find((application) => {
-                return application.name.includes(text);
-            }),
-        );
-    }
+
     return(
     
     <ThemeProvider theme={theme}>
